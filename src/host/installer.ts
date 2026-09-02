@@ -14,7 +14,7 @@
  * hot-reload would not re-fiber.
  *
  * The active profile is discovered by scanning `$DSH_HOME/profiles/*` for the
- * directory whose `node_modules/@deepseek-ai/dsh-client-ui-theme-store`
+ * directory whose `node_modules/@danielng23/dsh-client-ui-theme-store`
  * resolves to this package.
  */
 
@@ -52,12 +52,12 @@ export function resolveActiveProfileDir(): string | undefined {
   for (const name of readdirSync(profilesDir, { withFileTypes: true })) {
     if (!name.isDirectory()) continue
     const dir = join(profilesDir, name.name)
-    const marker = join(dir, 'node_modules/@deepseek-ai/dsh-client-ui-theme-store/package.json')
+    const marker = join(dir, 'node_modules/@danielng23/dsh-client-ui-theme-store/package.json')
     if (!existsSync(marker)) continue
     // Confirm the linked package is this package (not a stale copy).
     try {
       const manifest = JSON.parse(readFileSync(marker, 'utf8')) as { name?: string }
-      if (manifest.name === '@deepseek-ai/dsh-client-ui-theme-store') return dir
+      if (manifest.name === '@danielng23/dsh-client-ui-theme-store') return dir
     } catch {
       // Unreadable marker — skip.
     }

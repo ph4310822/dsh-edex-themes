@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-client-ui-theme-store",
+  "name": "@danielng23/dsh-client-ui-theme-store",
   "description": "Theme store plugin for the DeepSeek Harness web GUI: a settings Theme Store page that reads a JSON theme catalog from this repository (GitHub), shows name/author/screenshot cards, and applies selected --dsw-* token themes through the harness theme service",
   "version": "0.1.0",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dsh-edex/dsh-edex-themes.git",
+    "url": "git+https://github.com/ph4310822/dsh-edex-themes.git",
     "directory": "."
   },
   "type": "module",

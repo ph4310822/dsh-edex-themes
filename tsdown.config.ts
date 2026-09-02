@@ -38,7 +38,7 @@ const PRELOADED_CLIENT_EXTERNALS = [
   '@deepseek-ai/dsh-client-runtime/client',
 ] as const
 
-const ID = '@deepseek-ai/dsh-client-ui-theme-store'
+const ID = '@danielng23/dsh-client-ui-theme-store'
 
 const CSS_VIRTUAL_PREFIX = '\0dsh-css:'
 const GLOBAL_CSS_VIRTUAL_PREFIX = '\0dsh-global-css:'

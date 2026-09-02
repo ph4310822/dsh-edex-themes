@@ -1,8 +1,29 @@
-# @deepseek-ai/dsh-client-ui-theme-store
+# @danielng23/dsh-client-ui-theme-store
 
-**Theme store plugin for the DeepSeek Harness Web GUI.** Ships a new **Theme Store** settings page where users browse a flat catalog of curated color themes, preview them via screenshots, and apply them with one click. The catalog is a plain JSON file in this repository (`catalog/themes.json`) — push the repo to GitHub and the plugin fetches the catalog from the raw URL at runtime.
+**Theme store plugin for the DeepSeek Harness Web GUI.** Ships a new **Theme Store** settings page where users browse a flat catalog of curated color themes, preview them via screenshots, and apply them with one click. The catalog is a plain JSON file in this repository (`catalog/edex-themes.json`) — push the repo to GitHub and the plugin fetches the catalog from the raw URL at runtime.
 
-> "No category, just read a json file from this repo(push to github), theme contains name, author, screenshot."
+![Theme Store screenshot](screenshot.png)
+
+## Installation
+
+### Install from npm
+
+```bash
+pnpm add @danielng23/dsh-client-ui-theme-store
+```
+
+### Add to the harness
+
+After installing the package, add the plugin to your harness instance's `cordis.patch.yml`:
+
+```yaml
+- id: ui-theme-store
+  name: '@danielng23/dsh-client-ui-theme-store'
+```
+
+The client bundle is automatically served at `/plugins/@danielng23/dsh-client-ui-theme-store/client.js`.
+
+> "No category, just read a json file from this repo (push to github), theme contains name, author, screenshot."
 
 ## What it looks like
 
@@ -22,7 +43,7 @@ Clicking **Apply**:
 
 ## Catalog
 
-The catalog is a JSON document at `catalog/themes.json` in this repository. Its structure:
+The catalog is a JSON document at `catalog/edex-themes.json` in this repository. Its structure:
 
 ```json
 {
@@ -63,7 +84,7 @@ The catalog is a JSON document at `catalog/themes.json` in this repository. Its 
 
 ### Adding a theme
 
-1. Add an entry to `catalog/themes.json`.
+1. Add an entry to `catalog/edex-themes.json`.
 2. Add a screenshot image to `catalog/screenshots/` (or reference an external URL in `screenshot`).
 3. Push the repo to GitHub — the plugin will pick up the new theme on next load.
 
@@ -109,35 +130,35 @@ Two ways to compose this plugin into a running DeepSeek Harness GUI:
    cp -r . /path/to/deepseek-harness/packages/client/ui-theme-store
    ```
 2. Add a tsconfig reference — add `{ "path": "packages/client/ui-theme-store" }` to `tsconfig.client.json`'s `references`.
-3. Add a dependency — add `"@deepseek-ai/dsh-client-ui-theme-store": "workspace:^"` to `packages/bundle/web-app/package.json`.
+3. Add a dependency — add `"@danielng23/dsh-client-ui-theme-store": "workspace:^"` to `packages/bundle/web-app/package.json`.
 4. Add a cordis patch row — insert into `packages/bundle/web-app/cordis.patch.yml`:
    ```yaml
    - id: ui-theme-store
-     name: '@deepseek-ai/dsh-client-ui-theme-store'
+     name: '@danielng23/dsh-client-ui-theme-store'
    ```
 5. Rebuild: `pnpm run build:lib:client && pnpm run build:web`.
 
 #### B. External dependency
 
-1. Install the package from GitHub or npm:
+1. Install the package from npm:
    ```bash
-   pnpm add @deepseek-ai/dsh-client-ui-theme-store
+   pnpm add @danielng23/dsh-client-ui-theme-store
    ```
 2. Add a row to the cordis patch (see above) and a dependency entry in `web-app/package.json`.
-3. The client bundle (`lib/client.js`) is in the correct closure-factory format — the harness modules node half will serve it at `/plugins/@deepseek-ai/dsh-client-ui-theme-store/client.js`.
+3. The client bundle (`lib/client.js`) is in the correct closure-factory format — the harness modules node half will serve it at `/plugins/@danielng23/dsh-client-ui-theme-store/client.js`.
 
 ### Catalog URL
 
-The plugin fetches the catalog from a configurable URL. The default is:
+The plugin's node half serves the catalog at the same-origin webserver route `/catalog/edex-themes.json`, so themes load without any GitHub push. The default catalog URL is:
 
 ```
-https://raw.githubusercontent.com/dsh-edex/dsh-edex-themes/main/catalog/themes.json
+/catalog/edex-themes.json
 ```
 
 Override at build time by setting the environment variable:
 
 ```bash
-DSH_CLIENT_THEME_STORE_CATALOG_URL=https://your-raw-url/catalog/themes.json pnpm run build
+DSH_CLIENT_THEME_STORE_CATALOG_URL=https://your-raw-url/catalog/edex-themes.json pnpm run build
 ```
 
 Or edit the constant in `src/client/catalog.ts`.

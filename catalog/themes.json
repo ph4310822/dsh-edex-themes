@@ -1,0 +1,99 @@
+{
+  "themes": [
+    {
+      "id": "ocean",
+      "name": "Ocean",
+      "author": "dsh-edex",
+      "screenshot": "screenshots/ocean.svg",
+      "colorScheme": "dark",
+      "tokens": {
+        "--dsw-alias-bg-base": "#0d1b2a",
+        "--dsw-alias-bg-layer-1": "#14283c",
+        "--dsw-alias-bg-layer-2": "#1b344c",
+        "--dsw-alias-bg-overlay": "#101f30",
+        "--dsw-alias-border-l1": "#2a4a68",
+        "--dsw-alias-border-l2": "#3a6385",
+        "--dsw-alias-brand-primary": "#4ea1ff",
+        "--dsw-alias-label-primary": "#e6eef7",
+        "--dsw-alias-label-secondary": "#9db8d0",
+        "--dsw-specific-sidebar-fill": "#101f30"
+      }
+    },
+    {
+      "id": "forest",
+      "name": "Forest",
+      "author": "dsh-edex",
+      "screenshot": "screenshots/forest.svg",
+      "colorScheme": "dark",
+      "tokens": {
+        "--dsw-alias-bg-base": "#0f1a12",
+        "--dsw-alias-bg-layer-1": "#16251a",
+        "--dsw-alias-bg-layer-2": "#1d3122",
+        "--dsw-alias-bg-overlay": "#111d15",
+        "--dsw-alias-border-l1": "#2c4634",
+        "--dsw-alias-border-l2": "#3d5f47",
+        "--dsw-alias-brand-primary": "#5fd47a",
+        "--dsw-alias-label-primary": "#e3f0e6",
+        "--dsw-alias-label-secondary": "#9dbca5",
+        "--dsw-specific-sidebar-fill": "#111d15"
+      }
+    },
+    {
+      "id": "sunset",
+      "name": "Sunset",
+      "author": "dsh-edex",
+      "screenshot": "screenshots/sunset.svg",
+      "colorScheme": "dark",
+      "tokens": {
+        "--dsw-alias-bg-base": "#1c1318",
+        "--dsw-alias-bg-layer-1": "#2a1c20",
+        "--dsw-alias-bg-layer-2": "#38262b",
+        "--dsw-alias-bg-overlay": "#22171c",
+        "--dsw-alias-border-l1": "#4d323a",
+        "--dsw-alias-border-l2": "#6a4750",
+        "--dsw-alias-brand-primary": "#ff8f6b",
+        "--dsw-alias-label-primary": "#f7e9e4",
+        "--dsw-alias-label-secondary": "#c9a9a0",
+        "--dsw-specific-sidebar-fill": "#22171c"
+      }
+    },
+    {
+      "id": "mono",
+      "name": "Mono",
+      "author": "dsh-edex",
+      "screenshot": "screenshots/mono.svg",
+      "colorScheme": "light",
+      "tokens": {
+        "--dsw-alias-bg-base": "#f7f7f5",
+        "--dsw-alias-bg-layer-1": "#ffffff",
+        "--dsw-alias-bg-layer-2": "#ececea",
+        "--dsw-alias-bg-overlay": "#f2f2f0",
+        "--dsw-alias-border-l1": "#d8d8d4",
+        "--dsw-alias-border-l2": "#b8b8b2",
+        "--dsw-alias-brand-primary": "#3a3a3a",
+        "--dsw-alias-label-primary": "#1c1c1c",
+        "--dsw-alias-label-secondary": "#5a5a58",
+        "--dsw-specific-sidebar-fill": "#ececea"
+      }
+    },
+    {
+      "id": "blush",
+      "name": "Blush",
+      "author": "dsh-edex",
+      "screenshot": "screenshots/blush.svg",
+      "colorScheme": "light",
+      "tokens": {
+        "--dsw-alias-bg-base": "#fbf3f4",
+        "--dsw-alias-bg-layer-1": "#ffffff",
+        "--dsw-alias-bg-layer-2": "#f6e6e9",
+        "--dsw-alias-bg-overlay": "#f9eef0",
+        "--dsw-alias-border-l1": "#e8cdd3",
+        "--dsw-alias-border-l2": "#d6aab4",
+        "--dsw-alias-brand-primary": "#d65a72",
+        "--dsw-alias-label-primary": "#332225",
+        "--dsw-alias-label-secondary": "#8a626a",
+        "--dsw-specific-sidebar-fill": "#f6e6e9"
+      }
+    }
+  ]
+}

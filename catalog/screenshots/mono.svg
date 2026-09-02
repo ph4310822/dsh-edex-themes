@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="200" viewBox="0 0 320 200">
+  <rect width="320" height="200" fill="#f7f7f5"/>
+  <rect x="0" y="0" width="72" height="200" fill="#ececea"/>
+  <rect x="84" y="16" width="60" height="10" rx="2" fill="#5a5a58" opacity="0.8"/>
+  <rect x="84" y="34" width="44" height="8" rx="2" fill="#5a5a58" opacity="0.5"/>
+  <rect x="84" y="50" width="52" height="8" rx="2" fill="#5a5a58" opacity="0.35"/>
+  <rect x="96" y="80" width="160" height="84" rx="8" fill="#ffffff" stroke="#d8d8d4"/>
+  <rect x="110" y="94" width="90" height="10" rx="2" fill="#1c1c1c"/>
+  <rect x="110" y="112" width="70" height="8" rx="2" fill="#5a5a58"/>
+  <rect x="110" y="128" width="84" height="8" rx="2" fill="#5a5a58" opacity="0.7"/>
+  <rect x="110" y="144" width="40" height="12" rx="6" fill="#3a3a3a"/>
+  <rect x="230" y="94" width="12" height="12" rx="6" fill="#3a3a3a" opacity="0.85"/>
+  <rect x="230" y="112" width="12" height="12" rx="6" fill="#5a5a58" opacity="0.6"/>
+  <text x="160" y="188" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#5a5a58">Mono · dsh-edex</text>
+</svg>

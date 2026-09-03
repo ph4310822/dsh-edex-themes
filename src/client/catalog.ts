@@ -12,12 +12,20 @@
 import type { ThemeDefinition } from '@deepseek-ai/dsh-client-ui-theme/client'
 
 /**
- * Default catalog URL. Served locally by this plugin's node half at the
- * webserver route `/catalog/edex-themes.json` (same origin as the GUI), so
- * themes load without any GitHub push. Overridable at build time via
- * DSH_CLIENT_THEME_STORE_CATALOG_URL.
+ * Default catalog URL: the live catalog in this repository, fetched from
+ * GitHub raw so themes update by pushing to the repo — no plugin release
+ * required. Overridable at build time via DSH_CLIENT_THEME_STORE_CATALOG_URL.
  */
-export const DEFAULT_CATALOG_URL = '/catalog/edex-themes.json'
+export const DEFAULT_CATALOG_URL =
+  'https://raw.githubusercontent.com/ph4310822/dsh-edex-themes/main/catalog/edex-themes.json'
+
+/**
+ * Bundled fallback: the catalog shipped with the plugin, served by the node
+ * half at the same-origin webserver route. Used when the live GitHub fetch
+ * fails (offline / GitHub unreachable), so the store still shows the shipped
+ * themes rather than an empty error state.
+ */
+export const LOCAL_CATALOG_URL = '/catalog/edex-themes.json'
 
 /** Resolve the effective catalog URL (build-time override, else default). */
 export function catalogUrl(): string {

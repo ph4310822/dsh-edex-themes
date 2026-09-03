@@ -12,9 +12,10 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const EDEX_ROOT = resolve(__dirname, '../../dsh-edex')
 const OUT_PATH = resolve(__dirname, '../catalog/edex-themes.json')
 const OWNER = 'ph4310822'
-const SCREENSHOTS = ['review-shot.png', 'screenshot.png', 'probe-shot.png']
+const SCREENSHOTS = ['review-shot.png', 'screenshot.png', 'probe-fullscreen-final.png', 'probe-shot.png']
 
 function displayName(slug: string): string {
+  if (slug === 'dsh-edex-ui') return 'eDEX'
   const word = slug.replace(/^dsh-edex-/, '').replace(/-ui$/, '')
   return word.charAt(0).toUpperCase() + word.slice(1)
 }
@@ -23,7 +24,7 @@ async function main(): Promise<void> {
   const entries: { id: string; name: string; author: string; screenshot: string; colorScheme: 'dark'; type: 'shell'; installPackage: string; shellPluginId: string; installHint: string; tokens: Record<string, string> }[] = []
   let failures = 0
   const packages = readdirSync(EDEX_ROOT, { withFileTypes: true })
-    .filter(d => d.isDirectory() && /^dsh-edex-.+-ui$/.test(d.name))
+    .filter(d => d.isDirectory() && /^dsh-edex(?:-.+)?-ui$/.test(d.name))
     .sort((a, b) => a.name.localeCompare(b.name))
 
   for (const { name: slug } of packages) {
@@ -76,8 +77,9 @@ async function main(): Promise<void> {
   console.log(`\nwrote ${entries.length} themes to ${relative(resolve(__dirname, '..'), OUT_PATH)} (${failures} skipped)`)
 }
 
-/** The variant id from a repo slug (`dsh-edex-armory-ui` → `armory`). */
+/** The variant id from a repo slug (`dsh-edex-armory-ui` → `armory`, `dsh-edex-ui` → `edex`). */
 function variantOf(slug: string): string {
+  if (slug === 'dsh-edex-ui') return 'edex'
   return slug.replace(/^dsh-edex-/, '').replace(/-ui$/, '')
 }
 

@@ -14,7 +14,8 @@
  * hot-reload would not re-fiber.
  *
  * The active profile is discovered by scanning `$DSH_HOME/profiles/*` for the
- * directory whose `node_modules/@danielng23/dsh-client-ui-theme-store`
+ * directory whose `node_modules/@deepseek-ai/dsh-client-ui-theme-store` (or
+ * `@danielng23/dsh-client-ui-theme-store` when installed from npm)
  * resolves to this package.
  */
 
@@ -30,9 +31,10 @@ const VARIANT_BASE_IDS = ['host-system-metrics', 'ui-edex', 'ui-theme-terminal']
 /** The three row suffixes every eDEX variant bundle inserts (prefixed form). */
 const VARIANT_ROW_SUFFIXES = ['-host-system-metrics', '-ui-edex', '-ui-theme-terminal'] as const
 
-/** The variant id derived from a bundle package name (`@danielng23/dsh-edex-armory-ui` → `armory`). */
+/** The variant id derived from a bundle package name (`@danielng23/dsh-edex-armory-ui` → `armory`, `@danielng23/dsh-edex-ui` → `edex`). */
 export function variantIdOf(bundlePackage: string): string {
   const slug = bundlePackage.slice(bundlePackage.lastIndexOf('/') + 1)
+  if (slug === 'dsh-edex-ui') return 'edex'
   return slug.replace(/^dsh-edex-/, '').replace(/-ui$/, '')
 }
 
@@ -52,12 +54,15 @@ export function resolveActiveProfileDir(): string | undefined {
   for (const name of readdirSync(profilesDir, { withFileTypes: true })) {
     if (!name.isDirectory()) continue
     const dir = join(profilesDir, name.name)
-    const marker = join(dir, 'node_modules/@danielng23/dsh-client-ui-theme-store/package.json')
-    if (!existsSync(marker)) continue
+    // Check both scopes: @deepseek-ai (local file: dep) and @danielng23 (npm-published).
+    const marker = join(dir, 'node_modules/@deepseek-ai/dsh-client-ui-theme-store/package.json')
+    const markerNg = join(dir, 'node_modules/@danielng23/dsh-client-ui-theme-store/package.json')
+    const markerPath = existsSync(marker) ? marker : existsSync(markerNg) ? markerNg : undefined
+    if (markerPath === undefined) continue
     // Confirm the linked package is this package (not a stale copy).
     try {
-      const manifest = JSON.parse(readFileSync(marker, 'utf8')) as { name?: string }
-      if (manifest.name === '@danielng23/dsh-client-ui-theme-store') return dir
+      const manifest = JSON.parse(readFileSync(markerPath, 'utf8')) as { name?: string }
+      if (manifest.name === '@deepseek-ai/dsh-client-ui-theme-store' || manifest.name === '@danielng23/dsh-client-ui-theme-store') return dir
     } catch {
       // Unreadable marker — skip.
     }

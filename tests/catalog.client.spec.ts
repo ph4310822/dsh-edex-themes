@@ -92,16 +92,16 @@ describe('resolveScreenshot', () => {
 })
 
 describe('catalogUrl', () => {
-  it('defaults to the local catalog route', () => {
+  it('defaults to the live GitHub catalog', () => {
     vi.stubEnv('DSH_CLIENT_THEME_STORE_CATALOG_URL', undefined)
-    expect(catalogUrl()).toBe('/catalog/edex-themes.json')
+    expect(catalogUrl()).toBe('https://raw.githubusercontent.com/ph4310822/dsh-edex-themes/main/catalog/edex-themes.json')
   })
 
   it('honors the build-time override and ignores an empty override', () => {
     vi.stubEnv('DSH_CLIENT_THEME_STORE_CATALOG_URL', 'https://example.com/themes.json')
     expect(catalogUrl()).toBe('https://example.com/themes.json')
     vi.stubEnv('DSH_CLIENT_THEME_STORE_CATALOG_URL', '')
-    expect(catalogUrl()).toBe('/catalog/edex-themes.json')
+    expect(catalogUrl()).toBe('https://raw.githubusercontent.com/ph4310822/dsh-edex-themes/main/catalog/edex-themes.json')
   })
 })
 

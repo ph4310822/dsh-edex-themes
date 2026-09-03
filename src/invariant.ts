@@ -1,12 +1,12 @@
 /**
  * Package-owned invariant companion.
- * @module @danielng23/dsh-client-ui-theme-store/invariant
+ * @module @deepseek-ai/dsh-client-ui-theme-store/invariant
  */
 
 import type { Context } from '@deepseek-ai/cordis'
 import type { InvariantInstaller } from '@deepseek-ai/dsh-invariants'
 
-const PACKAGE_NAME = '@danielng23/dsh-client-ui-theme-store'
+const PACKAGE_NAME = '@deepseek-ai/dsh-client-ui-theme-store'
 
 /** Cordis companion plugin name. */
 export const name = 'client-ui-theme-store-invariant'

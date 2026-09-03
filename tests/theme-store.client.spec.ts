@@ -68,6 +68,25 @@ describe('ThemeStoreRuntime', () => {
     expect(state.themes).toHaveLength(0)
   })
 
+  it('falls back to the bundled local catalog when the configured source fails', async () => {
+    const { runtime } = bench()
+    const fetchMock = vi.fn(async (url: string) => {
+      if (url === 'https://example.com/themes.json') throw new Error('github down')
+      return new Response(JSON.stringify(CATALOG_DOC), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      })
+    })
+    vi.stubGlobal('fetch', fetchMock)
+    await runtime.load()
+    const state = runtime.getState()
+    expect(state.status).toBe('ready')
+    expect(state.themes).toHaveLength(2)
+    // Primary (GitHub) tried first, then the local fallback.
+    expect(fetchMock.mock.calls.map(call => call[0]))
+      .toEqual(['https://example.com/themes.json', '/catalog/edex-themes.json'])
+  })
+
   it('applies a catalog theme: registers, setTheme, persists', async () => {
     const { runtime, storeHost, theme } = bench()
     mockFetch(CATALOG_DOC)

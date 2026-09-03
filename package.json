@@ -1,7 +1,7 @@
 {
-  "name": "@danielng23/dsh-client-ui-theme-store",
+  "name": "@deepseek-ai/dsh-client-ui-theme-store",
   "description": "Theme store plugin for the DeepSeek Harness web GUI: a settings Theme Store page that reads a JSON theme catalog from this repository (GitHub), shows name/author/screenshot cards, and applies selected --dsw-* token themes through the harness theme service",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publishConfig": {
     "access": "public"
   },

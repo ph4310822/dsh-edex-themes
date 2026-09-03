@@ -12,7 +12,7 @@ import type { Context } from '@deepseek-ai/cordis'
 import type { SettingsScope } from '@deepseek-ai/dsh-client-runtime/client'
 import type { ThemeRuntime, ThemeSnapshot } from '@deepseek-ai/dsh-client-ui-theme/client'
 import { createSnapshotStore, type SnapshotStore } from '@deepseek-ai/dsh-client-runtime/client'
-import { catalogUrl, fetchCatalog, type CatalogTheme } from './catalog.ts'
+import { catalogUrl, fetchCatalog, LOCAL_CATALOG_URL, type CatalogTheme, type ThemeCatalog } from './catalog.ts'
 import type { ThemeStoreSettings } from '../theme-store-settings.ts'
 
 /** Catalog loading phase. */
@@ -91,15 +91,17 @@ export class ThemeStoreRuntime {
 
   /**
    * Load the catalog from the configured URL and reconcile the persisted
-   * applied theme. Safe to call repeatedly (retry); a failed fetch leaves
-   * the previous ready state intact and reports an error snapshot.
+   * applied theme. If the live (GitHub) source is unreachable, falls back to
+   * the bundled catalog served by the node half. Safe to call repeatedly
+   * (retry); a total failure leaves the previous ready state intact and
+   * reports an error snapshot.
    * @returns completion of the load.
    */
   async load(): Promise<void> {
     if (this.disposed) return
     this.publish({ status: 'loading', error: undefined })
     try {
-      const catalog = await fetchCatalog(this.href)
+      const catalog = await this.fetchCatalogWithFallback()
       if (this.disposed) return
       this.publish({ status: 'ready', themes: catalog.themes, error: undefined })
       this.adoptPersisted()
@@ -109,6 +111,25 @@ export class ThemeStoreRuntime {
         status: 'error',
         error: error instanceof Error ? error.message : String(error),
       })
+    }
+  }
+
+  /**
+   * Fetch the catalog, falling back to the bundled local route when the
+   * configured (GitHub) source fails. A non-GitHub href is tried as-is; when
+   * it and the local fallback both fail, the original error surfaces.
+   * @returns the fetched catalog.
+   */
+  private async fetchCatalogWithFallback(): Promise<ThemeCatalog> {
+    try {
+      return await fetchCatalog(this.href)
+    } catch (primaryError) {
+      if (this.href === LOCAL_CATALOG_URL) throw primaryError
+      try {
+        return await fetchCatalog(LOCAL_CATALOG_URL)
+      } catch {
+        throw primaryError
+      }
     }
   }
 

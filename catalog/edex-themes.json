@@ -664,6 +664,41 @@
         "--dsw-specific-sidebar-fill": "#0a0706",
         "--dsw-specific-input-major": "#0a0706"
       }
+    },
+    {
+      "id": "mission",
+      "name": "Mission",
+      "author": "@danielng23",
+      "screenshot": "https://raw.githubusercontent.com/ph4310822/dsh-edex-mission-ui/main/review-shot.png",
+      "colorScheme": "dark",
+      "type": "shell",
+      "installPackage": "@danielng23/dsh-edex-mission-ui",
+      "shellPluginId": "@danielng23/dsh-mission-client-ui-edex",
+      "installHint": "dsh plugin --profile <name> add @danielng23/dsh-edex-mission-ui",
+      "tokens": {
+        "--dsw-alias-bg-base": "#0d1626",
+        "--dsw-alias-bg-layer-1": "#0d1626",
+        "--dsw-alias-bg-layer-2": "#0d1626",
+        "--dsw-alias-bg-overlay": "#0d1626",
+        "--dsw-alias-border-l1": "#1e3a5f",
+        "--dsw-alias-border-l2": "#105460",
+        "--dsw-alias-border-l3": "#00d9ff",
+        "--dsw-alias-brand-primary": "#00d9ff",
+        "--dsw-alias-label-primary": "#00d9ff",
+        "--dsw-alias-label-primary-bluish": "#00d9ff",
+        "--dsw-alias-label-primary-dimmed": "#105460",
+        "--dsw-alias-label-secondary": "#105460",
+        "--dsw-alias-label-tertiary": "#105460",
+        "--dsw-alias-label-caption": "#105460",
+        "--dsw-alias-state-error-primary": "#ff3366",
+        "--dsw-alias-state-success-primary": "#00ff9d",
+        "--dsw-alias-state-warn-primary": "#ffd600",
+        "--dsw-alias-state-business-primary": "#00d9ff",
+        "--dsw-alias-button-info-fill": "#00d9ff",
+        "--dsw-alias-button-info-hover": "#105460",
+        "--dsw-specific-sidebar-fill": "#0d1626",
+        "--dsw-specific-input-major": "#0d1626"
+      }
     }
   ]
 }

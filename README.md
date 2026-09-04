@@ -1,8 +1,16 @@
-# @deepseek-ai/dsh-client-ui-theme-store
-
-**Theme store plugin for the DeepSeek Harness Web GUI.** Ships a new **Theme Store** settings page where users browse a flat catalog of curated color themes, preview them via screenshots, and apply them with one click. The catalog is a plain JSON file in this repository (`catalog/edex-themes.json`) — push the repo to GitHub and the plugin fetches the catalog from the raw URL at runtime.
+SCIFI/HUD/TERMINAL-style theme store for DeekSeek Harness. 
 
 ![Theme Store screenshot](screenshot.png)
+
+## eDEX-UI inspired themes
+
+The shell themes in this store are **inspired by [eDEX-UI](https://github.com/GitSquared/edex-ui)** — the sci-fi, fully-featured terminal emulator dashboard. Each variant wraps the default web surface in an eDEX-style frame:
+
+- **Two system info panels** — live system metrics and network activity
+- **File directory browser** — filesystem explorer
+- **Editor + terminal** — the working surface
+
+Every theme in the catalog is **created by agents**: the variant shells, palettes, and catalog entries are all generated automatically by AI agents, so the whole catalog is a product of automated theme creation rather than hand-authored files.
 
 ## Installation
 

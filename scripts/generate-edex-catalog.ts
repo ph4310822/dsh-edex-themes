@@ -192,6 +192,7 @@ function resolveValue(
   palette: Record<string, string>,
   fixedAccents: { amber?: string; red?: string; cyan?: string },
   locals: Record<string, string>,
+  objectLocals: Record<string, Record<string, string>> = {},
 ): string | undefined {
   const trimmed = expr.trim()
   // Direct hex literal: "#xxxxxx"
@@ -210,6 +211,13 @@ function resolveValue(
   const fixedMatch = trimmed.match(/^FIXED_ACCENTS\.([a-zA-Z_][a-zA-Z0-9_]*)$/)
   if (fixedMatch) {
     return fixedAccents[fixedMatch[1]]?.toLowerCase()
+  }
+  // <ObjectConst>.<field> — any module-level frozen hex-object const
+  // (FINTECH_SURFACES.card, theme tokens, …), collected from the bundle
+  const objMatch = trimmed.match(/^([a-zA-Z_][a-zA-Z0-9_]*)\.([a-zA-Z_][a-zA-Z0-9_]*)$/)
+  if (objMatch) {
+    const value = objectLocals[objMatch[1]]?.[objMatch[2]]
+    return value?.toLowerCase()
   }
   // Local const
   if (locals[trimmed] !== undefined) {
@@ -253,6 +261,7 @@ function resolveTokens(
   palette: Record<string, string>,
   fixedAccents: { amber?: string; red?: string; cyan?: string },
   moduleLocals: Record<string, string> = {},
+  objectLocals: Record<string, Record<string, string>> = {},
 ): ResolvedTokens | undefined {
   // Step 1: extract `const <name> = "<hex>";` declarations at the top of
   // the function body. These are local helper variables used in the
@@ -280,7 +289,7 @@ function resolveTokens(
   // Step 3: resolve each value.
   const result: Record<string, string> = {}
   for (const [key, valueExpr] of entries) {
-    const resolved = resolveValue(valueExpr, palette, fixedAccents, locals)
+    const resolved = resolveValue(valueExpr, palette, fixedAccents, locals, objectLocals)
     if (resolved === undefined) {
       console.warn(`  warning: could not resolve ${key} = ${valueExpr}`)
       return undefined
@@ -356,7 +365,17 @@ async function main(): Promise<void> {
     for (const m of src.matchAll(/const\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*"(#[0-9a-fA-F]{3,6})"\s*;/g)) {
       moduleLocals[m[1]] = m[2].toLowerCase()
     }
-    const tokens = resolveTokens(body, palette, fixed, moduleLocals)
+    // Module-level frozen hex-object consts (FIXED_ACCENTS, FINTECH_SURFACES,
+    // …) — each NAME's literal hex fields resolvable as NAME.<field>.
+    const objectLocals: Record<string, Record<string, string>> = {}
+    for (const m of src.matchAll(/const\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*Object\.freeze\(\{([\s\S]{0,600}?)\}\)/g)) {
+      const fields: Record<string, string> = {}
+      for (const f of m[2].matchAll(/([a-zA-Z_][a-zA-Z0-9_]*)\s*:\s*"(#[0-9a-fA-F]{3,6})"/g)) {
+        fields[f[1]] = f[2].toLowerCase()
+      }
+      if (Object.keys(fields).length) objectLocals[m[1]] = fields
+    }
+    const tokens = resolveTokens(body, palette, fixed, moduleLocals, objectLocals)
     if (!tokens) {
       console.warn(`skip ${slug}: failed to resolve all 22 token entries from tokenOverridesFor()`)
       failures++

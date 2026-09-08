@@ -1,6 +1,41 @@
 {
   "themes": [
     {
+      "id": "airtrack",
+      "name": "Airtrack",
+      "author": "@danielng23",
+      "screenshot": "https://raw.githubusercontent.com/ph4310822/dsh-edex-airtrack-ui/main/screenshot.png",
+      "colorScheme": "dark",
+      "type": "shell",
+      "installPackage": "@danielng23/dsh-airtrack-ui",
+      "shellPluginId": "@danielng23/dsh-airtrack-client-ui-edex",
+      "installHint": "dsh plugin --profile <name> add @danielng23/dsh-airtrack-ui",
+      "tokens": {
+        "--dsw-alias-bg-base": "#313131",
+        "--dsw-alias-bg-layer-1": "#313131",
+        "--dsw-alias-bg-layer-2": "#313131",
+        "--dsw-alias-bg-overlay": "#313131",
+        "--dsw-alias-border-l1": "#283d48",
+        "--dsw-alias-border-l2": "#557d91",
+        "--dsw-alias-border-l3": "#5d9ab8",
+        "--dsw-alias-brand-primary": "#5d9ab8",
+        "--dsw-alias-label-primary": "#5d9ab8",
+        "--dsw-alias-label-primary-bluish": "#5d9ab8",
+        "--dsw-alias-label-primary-dimmed": "#557d91",
+        "--dsw-alias-label-secondary": "#557d91",
+        "--dsw-alias-label-tertiary": "#557d91",
+        "--dsw-alias-label-caption": "#557d91",
+        "--dsw-alias-state-error-primary": "#f00000",
+        "--dsw-alias-state-success-primary": "#5d9ab8",
+        "--dsw-alias-state-warn-primary": "#ffe500",
+        "--dsw-alias-state-business-primary": "#5d9ab8",
+        "--dsw-alias-button-info-fill": "#5d9ab8",
+        "--dsw-alias-button-info-hover": "#557d91",
+        "--dsw-specific-sidebar-fill": "#313131",
+        "--dsw-specific-input-major": "#313131"
+      }
+    },
+    {
       "id": "armory",
       "name": "Armory",
       "author": "@danielng23",

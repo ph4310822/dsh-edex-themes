@@ -110,11 +110,14 @@ function tone(hex: string, lightness: number, saturationScale: number): string {
   return '#' + toHex(r2) + toHex(g2) + toHex(b2)
 }
 
-function paletteFor(accent: string): { primary: string; dim: string; border: string } {
+function paletteFor(accent: string): Record<string, string> {
   return {
     primary: accent.toLowerCase(),
     dim: tone(accent, 45, 0.67),
     border: tone(accent, 22, 0.72),
+    // Variants may add palette fields (SONAR added panel2 = tone(primary, 12, 0.55));
+    // mirror the runtime tone() convention so palette.<field> refs resolve.
+    panel2: tone(accent, 12, 0.55),
   }
 }
 
@@ -186,7 +189,7 @@ function extractTokenOverridesFor(src: string): string | undefined {
  */
 function resolveValue(
   expr: string,
-  palette: { primary: string; dim: string; border: string },
+  palette: Record<string, string>,
   fixedAccents: { amber?: string; red?: string; cyan?: string },
   locals: Record<string, string>,
 ): string | undefined {
@@ -195,10 +198,12 @@ function resolveValue(
   if (/^"#[0-9a-fA-F]{3,6}"$/.test(trimmed)) {
     return trimmed.slice(1, -1).toLowerCase()
   }
-  // palette.<field>
-  const paletteMatch = trimmed.match(/^palette\.(primary|dim|border)$/)
+  // palette.<field> (any field the runtime palette carries — primary/dim/
+  // border/panel2 and future additions; unknown fields resolve to undefined)
+  const paletteMatch = trimmed.match(/^palette\.([a-zA-Z_][a-zA-Z0-9_]*)$/)
   if (paletteMatch) {
-    return palette[paletteMatch[1] as 'primary' | 'dim' | 'border']
+    const value = (palette as Record<string, string>)[paletteMatch[1]]
+    return value?.toLowerCase()
   }
   // FIXED_ACCENTS.<field>
   const fixedMatch = trimmed.match(/^FIXED_ACCENTS\.(amber|red|cyan|success|warn|error|info)$/)
@@ -245,7 +250,7 @@ interface ResolvedTokens {
  */
 function resolveTokens(
   body: string,
-  palette: { primary: string; dim: string; border: string },
+  palette: Record<string, string>,
   fixedAccents: { amber?: string; red?: string; cyan?: string },
   moduleLocals: Record<string, string> = {},
 ): ResolvedTokens | undefined {

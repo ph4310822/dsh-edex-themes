@@ -131,12 +131,21 @@ function extractDefaultThemeColor(src: string): string | undefined {
  * literal from the bundle. The values are string literals preserved verbatim
  * by tsdown (rolldown), so a regex match on the source is enough.
  */
-function extractFixedAccents(src: string): { amber?: string; red?: string; cyan?: string } {
+function extractFixedAccents(src: string): { amber?: string; red?: string; cyan?: string } & Record<string, string | undefined> {
+  // amber/red/cyan may appear in any position, and variants may add extra
+  // semantic keys (e.g. LIGHTDECK added `success`) — capture the mandatory
+  // three by name, tolerate additional `key: "value"` pairs, and keep them
+  // all in the returned map.
   const m = src.match(
-    /FIXED_ACCENTS\s*=\s*Object\.freeze\(\{\s*amber:\s*"([^"]+)"\s*,\s*red:\s*"([^"]+)"\s*,\s*cyan:\s*"([^"]+)"\s*\}\)/,
+    /FIXED_ACCENTS\s*=\s*Object\.freeze\(\{([\s\S]{0,400}?)\}\)/,
   )
   if (!m) return {}
-  return { amber: m[1].toLowerCase(), red: m[2].toLowerCase(), cyan: m[3].toLowerCase() }
+  const body = m[1]
+  const map: Record<string, string | undefined> = {}
+  for (const km of body.matchAll(/\b([a-zA-Z_][a-zA-Z0-9_]*):\s*"([^"]+)"/g)) {
+    map[km[1]] = km[2].toLowerCase()
+  }
+  return map
 }
 
 /**
@@ -192,9 +201,9 @@ function resolveValue(
     return palette[paletteMatch[1] as 'primary' | 'dim' | 'border']
   }
   // FIXED_ACCENTS.<field>
-  const fixedMatch = trimmed.match(/^FIXED_ACCENTS\.(amber|red|cyan)$/)
+  const fixedMatch = trimmed.match(/^FIXED_ACCENTS\.(amber|red|cyan|success|warn|error|info)$/)
   if (fixedMatch) {
-    const key = fixedMatch[1] as 'amber' | 'red' | 'cyan'
+    const key = fixedMatch[1]
     return fixedAccents[key]?.toLowerCase()
   }
   // Local const
@@ -238,11 +247,13 @@ function resolveTokens(
   body: string,
   palette: { primary: string; dim: string; border: string },
   fixedAccents: { amber?: string; red?: string; cyan?: string },
+  moduleLocals: Record<string, string> = {},
 ): ResolvedTokens | undefined {
   // Step 1: extract `const <name> = "<hex>";` declarations at the top of
   // the function body. These are local helper variables used in the
-  // `return { ... }` block below.
-  const locals: Record<string, string> = {}
+  // `return { ... }` block below. Module-level consts (moduleLocals) are
+  // merged first so function-local declarations win on name collision.
+  const locals: Record<string, string> = { ...moduleLocals }
   for (const m of body.matchAll(/const\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*"(#[0-9a-fA-F]{3,6})"\s*;/g)) {
     locals[m[1]] = m[2].toLowerCase()
   }
@@ -333,7 +344,14 @@ async function main(): Promise<void> {
     }
 
     const palette = paletteFor(primary)
-    const tokens = resolveTokens(body, palette, fixed)
+    // Module-level string-hex consts (e.g. LIGHTDECK_TEXT) declared outside
+    // tokenOverridesFor() but referenced inside it — collect them so the
+    // resolver can substitute them like function-local consts.
+    const moduleLocals: Record<string, string> = {}
+    for (const m of src.matchAll(/const\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*"(#[0-9a-fA-F]{3,6})"\s*;/g)) {
+      moduleLocals[m[1]] = m[2].toLowerCase()
+    }
+    const tokens = resolveTokens(body, palette, fixed, moduleLocals)
     if (!tokens) {
       console.warn(`skip ${slug}: failed to resolve all 22 token entries from tokenOverridesFor()`)
       failures++

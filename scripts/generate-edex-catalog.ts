@@ -205,11 +205,11 @@ function resolveValue(
     const value = (palette as Record<string, string>)[paletteMatch[1]]
     return value?.toLowerCase()
   }
-  // FIXED_ACCENTS.<field>
-  const fixedMatch = trimmed.match(/^FIXED_ACCENTS\.(amber|red|cyan|success|warn|error|info)$/)
+  // FIXED_ACCENTS.<field> — any key the variant froze in (amber/red/cyan are
+  // the conventional trio; SONAR used `green`, LIGHTDECK added `success`)
+  const fixedMatch = trimmed.match(/^FIXED_ACCENTS\.([a-zA-Z_][a-zA-Z0-9_]*)$/)
   if (fixedMatch) {
-    const key = fixedMatch[1]
-    return fixedAccents[key]?.toLowerCase()
+    return fixedAccents[fixedMatch[1]]?.toLowerCase()
   }
   // Local const
   if (locals[trimmed] !== undefined) {

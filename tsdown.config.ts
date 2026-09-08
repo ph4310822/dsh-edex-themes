@@ -38,7 +38,14 @@ const PRELOADED_CLIENT_EXTERNALS = [
   '@deepseek-ai/dsh-client-runtime/client',
 ] as const
 
-const ID = '@deepseek-ai/dsh-client-ui-theme-store'
+/**
+ * Plugin id: the package name. The harness serves the client bundle at
+ * /plugins/<name>/client.js and requires the bundle to register exactly that
+ * name via __ModuleLoader__.load, so the id must follow package.json — this
+ * keeps npm publishes (@danielng23 scope) and local file: dep builds
+ * (@deepseek-ai scope) both correct.
+ */
+const ID = (JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf8')) as { name: string }).name
 
 const CSS_VIRTUAL_PREFIX = '\0dsh-css:'
 const GLOBAL_CSS_VIRTUAL_PREFIX = '\0dsh-global-css:'

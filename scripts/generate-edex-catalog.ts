@@ -368,7 +368,7 @@ async function main(): Promise<void> {
     // Module-level frozen hex-object consts (FIXED_ACCENTS, FINTECH_SURFACES,
     // …) — each NAME's literal hex fields resolvable as NAME.<field>.
     const objectLocals: Record<string, Record<string, string>> = {}
-    for (const m of src.matchAll(/const\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*Object\.freeze\(\{([\s\S]{0,600}?)\}\)/g)) {
+    for (const m of src.matchAll(/const\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*Object\.freeze\(\{([\s\S]{0,2400}?)\}\)/g)) {
       const fields: Record<string, string> = {}
       for (const f of m[2].matchAll(/([a-zA-Z_][a-zA-Z0-9_]*)\s*:\s*"(#[0-9a-fA-F]{3,6})"/g)) {
         fields[f[1]] = f[2].toLowerCase()

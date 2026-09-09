@@ -1084,6 +1084,41 @@
         "--dsw-specific-sidebar-fill": "#0a0706",
         "--dsw-specific-input-major": "#0a0706"
       }
+    },
+    {
+      "id": "weather",
+      "name": "Weather",
+      "author": "@danielng23",
+      "screenshot": "https://raw.githubusercontent.com/ph4310822/dsh-edex-weather-ui/main/review-shot.png",
+      "colorScheme": "dark",
+      "type": "shell",
+      "installPackage": "@danielng23/dsh-edex-weather-ui",
+      "shellPluginId": "@danielng23/dsh-weather-client-ui-edex",
+      "installHint": "dsh plugin --profile <name> add @danielng23/dsh-edex-weather-ui",
+      "tokens": {
+        "--dsw-alias-bg-base": "#4d4d4e",
+        "--dsw-alias-bg-layer-1": "#4d4d4e",
+        "--dsw-alias-bg-layer-2": "#4d4d4e",
+        "--dsw-alias-bg-overlay": "#4d4d4e",
+        "--dsw-alias-border-l1": "#6a6a6c",
+        "--dsw-alias-border-l2": "#616163",
+        "--dsw-alias-border-l3": "#d49500",
+        "--dsw-alias-brand-primary": "#d49500",
+        "--dsw-alias-label-primary": "#f8f8f8",
+        "--dsw-alias-label-primary-bluish": "#f8f8f8",
+        "--dsw-alias-label-primary-dimmed": "#a8a8a8",
+        "--dsw-alias-label-secondary": "#a8a8a8",
+        "--dsw-alias-label-tertiary": "#a8a8a8",
+        "--dsw-alias-label-caption": "#a8a8a8",
+        "--dsw-alias-state-error-primary": "#9d0300",
+        "--dsw-alias-state-success-primary": "#53a554",
+        "--dsw-alias-state-warn-primary": "#d49500",
+        "--dsw-alias-state-business-primary": "#536bae",
+        "--dsw-alias-button-info-fill": "#d49500",
+        "--dsw-alias-button-info-hover": "#c09226",
+        "--dsw-specific-sidebar-fill": "#4d4d4e",
+        "--dsw-specific-input-major": "#3f3f41"
+      }
     }
   ]
 }

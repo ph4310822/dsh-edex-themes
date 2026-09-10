@@ -307,12 +307,22 @@ interface CatalogEntry {
   name: string
   author: string
   screenshot: string
-  colorScheme: 'dark'
+  colorScheme: 'dark' | 'light'
   type: 'shell'
   installPackage: string
   shellPluginId: string
   installHint: string
   tokens: Record<string, string>
+}
+
+// Light/dark scheme detection: the resolved workspace background alias is the
+// most reliable signal (accent-derived palettes lie for light themes).
+function schemeFor(tokens: Record<string, string>): 'dark' | 'light' {
+  const bg = tokens['--dsw-alias-bg-base']
+  if (!bg || !/^#[0-9a-fA-F]{6}$/.test(bg)) return 'dark'
+  const n = parseInt(bg.slice(1), 16)
+  const lum = (0.2126 * ((n >> 16) & 255) + 0.7152 * ((n >> 8) & 255) + 0.0722 * (n & 255)) / 255
+  return lum > 0.5 ? 'light' : 'dark'
 }
 
 async function main(): Promise<void> {
@@ -395,7 +405,7 @@ async function main(): Promise<void> {
       name: displayName(slug),
       author: '@danielng23',
       screenshot,
-      colorScheme: 'dark',
+      colorScheme: schemeFor(tokens),
       type: 'shell',
       installPackage,
       shellPluginId,
